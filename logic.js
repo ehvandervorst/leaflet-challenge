@@ -88,7 +88,7 @@ function createMap(earthquakeData,platesData) {
 
   // Create our map, giving it the streetmap, earthquakes, and plates layers to display on load
   var myMap = L.map("map", {
-    center: [37.09, -95.71],
+    center: [32.842674, -6.770411],
     zoom: 3,
     layers: [darkMap, earthquakes, plates]
   });
@@ -103,19 +103,25 @@ function createMap(earthquakeData,platesData) {
 // Add a legend to the map
 var legend = L.control({ position: "bottomright" });
 
-legend.onAdd = function(){
-    var div = L.DomUtil.create("div","info legend");
+legend.on('load', function() {
     var magRange = [1, 2, 3, 4 , 5];
     var colors = ["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"];
 
-    for (var i = 0; i<magRange.length; i++) {
-      div.innerHTML +=
-      "<i style='background: " + colors[i] + "'></i> " +
-      magRange[i] + (magRange[i + 1] ? "&ndash;" + magRange[i + 1] + "<br>" : "+");
-    }
-    return div;
+    for (i = 0; i < magRange.length; i++) {
+      var layer = magRange[i];
+      var color = colors[i];
+      var item = document.createElement('div');
+      var key = document.createElement('span');
+      key.className = 'legend-key';
+      key.style.backgroundColor = 'white';
 
-  }; 
+      var value = document.createElement('span');
+      value.innerHTML = layer;
+      item.appendChild(key);
+      item.appendChild(value);
+      legend.appendChild(item);
+    }
+  }); 
 
 legend.addTo(myMap);
 
